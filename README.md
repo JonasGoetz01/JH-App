@@ -1,4 +1,4 @@
-This website is a project to manage the drinks administration for the Jugendahus in Hainstadt, Germany.
+This website is a project to manage the drinks administration for the youth center in Hainstadt, Germany.
 
 NodeJS is used for this.
 
