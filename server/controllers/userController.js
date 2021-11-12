@@ -123,7 +123,7 @@ exports.deletedrink = (req, res) => {
 
 exports.viewuser = (req, res) => {
   // User the connection
-  connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
+  connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
     // When done with the connection, release it
     if (!err) {
       let removedUser = req.query.removed;
