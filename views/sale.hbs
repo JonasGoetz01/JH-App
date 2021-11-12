@@ -1,0 +1,7 @@
+{{#if rows}}
+    <button type="button" class="btn btn-primary btn-lg" style="height: 200px; width: 200px; margin-bottom: 5px;" onclick="window.location.href='/overview/{{rows.[0].user_id}}'">Übersicht</button>
+{{/if}}
+
+{{#each rows}}
+    <button type="button" class="btn btn-primary btn-lg" style="height: 200px; width: 200px; margin-bottom: 5px;" onclick="window.location.href='/makesale/{{this.user_id}}/{{this.id}}'"><h2>#{{this.id}}</h1>{{this.name}} , {{this.brand}} ({{this.price_buy}}€)</button>
+{{/each}}
