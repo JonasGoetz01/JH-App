@@ -14,7 +14,7 @@ exports.admin = (req, res) => {
 
 exports.home = (req, res) => {
   // User the connection
-  connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
+  connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
     // When done with the connection, release it
     if (!err) {
       res.render('home', { rows });
@@ -123,7 +123,7 @@ exports.deletedrink = (req, res) => {
 
 exports.viewuser = (req, res) => {
   // User the connection
-  connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
+  connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
     // When done with the connection, release it
     if (!err) {
       let removedUser = req.query.removed;
@@ -256,7 +256,7 @@ exports.makesale = (req, res) => {
           console.log(err);
         }
       })
-      connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
+      connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
           res.render('home', { rows });
         } else {
@@ -335,7 +335,7 @@ exports.pay = (req, res) => {
   connection.query('UPDATE sales SET payed = 1 WHERE id = ?', req.params.id, (err, rows) => {
     if (!err) {
       // User the connection
-      connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
+      connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         // When done with the connection, release it
         if (!err) {
           res.render('home', { rows,  });
@@ -354,7 +354,7 @@ exports.payall = (req, res) => {
   connection.query('UPDATE sales SET payed = 1 WHERE user_id = ?', req.params.user_id, (err, rows) => {
     if (!err) {
       // User the connection
-      connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
+      connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         // When done with the connection, release it
         if (!err) {
           res.render('home', { rows});
