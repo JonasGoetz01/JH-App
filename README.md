@@ -12,7 +12,7 @@ apt install nodejs, npm, mysql-server
 npm init
 
 npm install express
-npm install express-handlebars
+npm install express-handlebars@^5.3.4
 npm install dotenv
 npm install body-parser
 npm install nodemon
