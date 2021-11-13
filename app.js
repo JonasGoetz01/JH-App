@@ -22,17 +22,7 @@ app.use(express.static('public'));
 
 // Templating Engine
 app.engine('hbs', exphbs( {extname: '.hbs' }));
-app.set('view engine', 'hbs');
-
-// Connection Pool
-// You don't need the connection here as we have it in userController
-// let connection = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASS,
-//   database: process.env.DB_NAME
-// });
- 
+app.set('view engine', 'hbs'); 
 
 const routes = require('./server/routes/user');
 app.use('/', routes);
