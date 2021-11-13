@@ -8,104 +8,158 @@ let connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
+/**
+ * 
+ * Render the admin page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.admin = (req, res) => {
   res.render('admin');
 }
 
+/**
+ * 
+ * Renders the homepage
+ * 
+ * It querrys the user table to get all active users and sens them inside the rows object to the homepage where they're diplayed
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.home = (req, res) => {
-  // User the connection
-  connection.query('SELECT * FROM user WHERE status = "active"', (err, rows) => {
-    // When done with the connection, release it
+  connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
     if (!err) {
       res.render('home', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Querrys the drin table to get all active drinks to show them on the drinkmanagement page
+ * It also get the removedDrink  variable from the deleteDrink Controller. So it shows a message when a drink was deleted
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.viewdrink = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM drink WHERE active = "active"', (err, rows) => {
-    // When done with the connection, release it
     if (!err) {
       let removedDrink = req.query.removed;
       res.render('drinkmanagement', { rows, removedDrink });
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Render the form drink page to display all the fields necessary for the user to input data for new drink
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.formdrink = (req, res) => {
   res.render('add-drink');
 }
 
+/**
+ * 
+ * Gets called by the adddrink page through a POST it gets all the data from the form and puts it into the drink table
+ * After that it sends a alert to the add-drink page; so it calls an empty add drink page and shows the message
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.createdrink = (req, res) => {
   const { name, brand, price_buy, price_intern, price_extern, box_size, stock } = req.body;
   let searchTerm = req.body.search;
-
-  // User the connection
-  connection.query('INSERT INTO drink SET name = ?, brand = ?, price_buy = ?, price_intern = ?, price_extern = ?, box_size = ?, stock = ?', [name, brand, price_buy, price_intern, price_extern, box_size, stock], (err, rows) => {
+  connection.query('INSERT INTO drink SET name = ?, brand = ?, price_buy = ?, price_intern = ?, price_extern = ?, box_size = ?, stock = ?', 
+  [name, brand, price_buy, price_intern, price_extern, box_size, stock], (err, rows) => {
     if (!err) {
       res.render('add-drink', { alert: 'Drink added successfully.' });
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Querrys the drink table to get all the drinks and send them inside the rows object to the edit-drink page where the information is displayed
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.editdrink = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM drink WHERE id = ?', [req.params.id], (err, rows) => {
     if (!err) {
       res.render('edit-drink', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Updates the given data to the drink that ist handed over through the id in the url
+ * after that it gets all the drink information to show it in the edit drink page again
+ * 
+ * send an message to the edit drink page to display that the drink has been updated
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.updatedrink = (req, res) => {
   const { name, brand, price_buy, price_intern, price_extern, box_size, stock } = req.body;
-  // User the connection
-  connection.query('UPDATE drink SET name = ?, brand = ?, price_buy = ?, price_intern = ?, price_extern = ?, box_size = ?, stock = ? WHERE id = ?', [name, brand, price_buy, price_intern, price_extern, box_size, stock, req.params.id], (err, rows) => {
-
+  connection.query('UPDATE drink SET name = ?, brand = ?, price_buy = ?, price_intern = ?, price_extern = ?, box_size = ?, stock = ? WHERE id = ?', 
+  [name, brand, price_buy, price_intern, price_extern, box_size, stock, req.params.id], (err, rows) => {
     if (!err) {
-      // User the connection
       connection.query('SELECT * FROM drink WHERE id = ?', [req.params.id], (err, rows) => {
-        // When done with the connection, release it
-        
         if (!err) {
           res.render('edit-drink', { rows, alert: `${name} has been updated.` });
         } else {
           console.log(err);
         }
-        console.log('The data from drink table: \n', rows);
       });
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Querrys the drink table and send all the data to the view-drink page inside the rows object
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.viewalldrink = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM drink WHERE id = ? AND active = "active"', [req.params.id], (err, rows) => {
     if (!err) {
       res.render('view-drink', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Sets the active status of the drink to false so that the drink is not longer visible
+ * 
+ * then create a message to be shown on the drinkmanagement site
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.deletedrink = (req, res) => {
   connection.query('UPDATE drink SET active = "notactive" WHERE id = ?', [req.params.id], (err, rows) => {
     if (!err) {
@@ -114,95 +168,131 @@ exports.deletedrink = (req, res) => {
     } else {
       console.log(err);
     }
-    console.log('The data from drink table are: \n', rows);
   });
 }
 
+/* ----------------------------------------------------User-section---------------------------------------------------------------------- */
 
-
-
+/**
+ * 
+ * Gets all active users and send them through the rows object to the usermanagement page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.viewuser = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
-    // When done with the connection, release it
     if (!err) {
       let removedUser = req.query.removed;
       res.render('usermanagement', { rows, removedUser });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * Handles the searchbar
+ * it searches inside the user table for matches for the first and the last name and displays everything on the usermanagement page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.finduser = (req, res) => {
   let searchTerm = req.body.search;
-  // User the connection
   connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name LIKE ?', ['%' + searchTerm + '%', '%' + searchTerm + '%'], (err, rows) => {
     if (!err) {
       res.render('usermanagement', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * renders all the fields required for inputting the data for new users
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.formuser = (req, res) => {
   res.render('add-user');
 }
 
+/**
+ * 
+ * put the given data from the user form and puts it into the user table
+ * 
+ * add the alert notifikation and send it to the add-user page to display the message that the user has been added
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.createuser = (req, res) => {
   const { first_name, last_name, email, phone, comments } = req.body;
   let searchTerm = req.body.search;
-
-  // User the connection
-  connection.query('INSERT INTO user SET first_name = ?, last_name = ?, email = ?, phone = ?, comments = ?', [first_name, last_name, email, phone, comments], (err, rows) => {
+  connection.query('INSERT INTO user SET first_name = ?, last_name = ?, email = ?, phone = ?, comments = ?', 
+  [first_name, last_name, email, phone, comments], (err, rows) => {
     if (!err) {
       res.render('add-user', { alert: 'User added successfully.' });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * gets data from database to display it on the edit page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.edituser = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM user WHERE id = ?', [req.params.id], (err, rows) => {
     if (!err) {
       res.render('edit-user', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * take teh data from the update user form to update the user 
+ * 
+ * then add the alert that the user has been updateted and send it to the edit user page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.updateuser = (req, res) => {
   const { first_name, last_name, email, phone, comments } = req.body;
-  // User the connection
   connection.query('UPDATE user SET first_name = ?, last_name = ?, email = ?, phone = ?, comments = ? WHERE id = ?', [first_name, last_name, email, phone, comments, req.params.id], (err, rows) => {
-
     if (!err) {
-      // User the connection
       connection.query('SELECT * FROM user WHERE id = ?', [req.params.id], (err, rows) => {
-        // When done with the connection, release it
-        
         if (!err) {
           res.render('edit-user', { rows, alert: `${first_name} has been updated.` });
         } else {
           console.log(err);
         }
-        console.log('The data from user table: \n', rows);
       });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
+/**
+ * 
+ * delete the given user and set the status to removed
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.deleteuser = (req, res) => {
   connection.query('UPDATE user SET status = ? WHERE id = ?', ['removed', req.params.id], (err, rows) => {
     if (!err) {
@@ -211,26 +301,34 @@ exports.deleteuser = (req, res) => {
     } else {
       console.log(err);
     }
-    console.log('The data from beer table are: \n', rows);
   });
 }
 
+/**
+ * 
+ * Get all active users and send them inside the rows object to the view-user page
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.viewalluser = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM user WHERE id = ?', [req.params.id], (err, rows) => {
     if (!err) {
       res.render('view-user', { rows });
     } else {
       console.log(err);
     }
-    console.log('The data from user table: \n', rows);
   });
 }
 
-
-
+/**
+ * 
+ * slelect all drinks to display them in the sale page so that a user can buy a drink
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.sale = (req, res) => {
-  // User the connection
   connection.query('SELECT * FROM drink WHERE active = "active"', (err, rows) => {
     if (!err) {
       var user_id = parseInt(req.params.id);
@@ -241,12 +339,19 @@ exports.sale = (req, res) => {
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * When a user buys a drink the stock of the drink is redeced by one and the sale with 
+ * 
+ * then it loads homepage
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.makesale = (req, res) => {
-  // User the connection
   var user_id = req.params.id;
   var drink_id = req.params.drink;
   connection.query('INSERT INTO sales SET user_id = ?, drink_id = ?', [user_id, drink_id], (err, rows) => {
@@ -256,6 +361,8 @@ exports.makesale = (req, res) => {
           console.log(err);
         }
       })
+
+      //load the homepage with all users
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
           res.render('home', { rows });
@@ -266,16 +373,22 @@ exports.makesale = (req, res) => {
     } else {
       console.log(err);
     }
-    console.log('The data from drink table: \n', rows);
   });
 }
 
+/**
+ * 
+ * When user_id is 0 then get all sales that matches the user and apply the external prices
+ * 
+ * if its another user the regular internal prices are applyed and displayed in an overfiew  
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.overview = (req, res) => {
   if(req.params.id == 0){
     var obj_drink;
-    // User the connection
     connection.query('SELECT * FROM sales WHERE user_id = ? AND payed = 0', [req.params.id], (err, sales) => {
-      // When done with the connection, release it
       if (!err) {
         if(sales.length >= 1){
         connection.query('SELECT * FROM drink', (err, drink) => {
@@ -302,9 +415,7 @@ exports.overview = (req, res) => {
     });
   }
   var obj_drink;
-  // User the connection
   connection.query('SELECT * FROM sales WHERE user_id = ? AND payed = 0', [req.params.id], (err, sales) => {
-    // When done with the connection, release it
     if (!err) {
       if(sales.length >= 1){
       connection.query('SELECT * FROM drink', (err, drink) => {
@@ -331,18 +442,22 @@ exports.overview = (req, res) => {
   });
 }
 
+/**
+ * 
+ * set the status of the sale to payed and render the homepage
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.pay = (req, res) => {
   connection.query('UPDATE sales SET payed = 1 WHERE id = ?', req.params.id, (err, rows) => {
     if (!err) {
-      // User the connection
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
-        // When done with the connection, release it
         if (!err) {
           res.render('home', { rows,  });
         } else {
           console.log(err);
         }
-        console.log('The data from user table: \n', rows);
       });
     } else {
       console.log(err);
@@ -350,18 +465,22 @@ exports.pay = (req, res) => {
   });
 }
 
+/**
+ * 
+ * set the status of all orders of one user to payed and render the homepage
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.payall = (req, res) => {
   connection.query('UPDATE sales SET payed = 1 WHERE user_id = ?', req.params.user_id, (err, rows) => {
     if (!err) {
-      // User the connection
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
-        // When done with the connection, release it
         if (!err) {
-          res.render('home', { rows});
+          res.render('home', { rows });
         } else {
           console.log(err);
         }
-        console.log('The data from user table: \n', rows);
       });
     } else {
       console.log(err);
