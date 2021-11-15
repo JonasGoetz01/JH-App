@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="http://localhost:5000/static/main.css">
 </head>
 
 
@@ -16,64 +17,6 @@
 <body>
 
   <style type="text/css">
-    body{
-      background-color: black;
-      color: white;
-    }
-
-    .btn, .btn-primary, .btn-lg {
-      background-color: rgba(255, 255, 255, 15%);
-      border-color: rgba(255, 255, 255, 15%);
-      transition-duration: 100ms;
-    }
-
-    .btn:hover, .btn-primary:hover, .btn-lg:hover, .btn:focus, .btn-primary:focus, .btn-lg:focus{
-      background-color: rgba(255, 255, 255, 20%);
-      border-color: rgba(255, 255, 255, 20%);
-    }
-
-    h2 {
-      background-image:linear-gradient(45deg, aqua, rgba(66, 103, 216, 0.726));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 30px;
-    }
-
-    h1 {
-      background-image:linear-gradient(45deg, aqua, rgba(66, 103, 216, 0.726));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 40px;
-      font-weight: bold;
-    }
-
-    p {
-      font-size: 35px;
-      font-weight: bold;
-      line-height: 40px;
-      background-image:linear-gradient(45deg, aqua, rgba(66, 103, 216, 0.726));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    th, td {
-      color: white;
-    }
-
-    img {
-      width: 75px;
-    }
-
-    .form-control {
-      background-color: rgba(255, 255, 255, 20%);
-      border-color: rgba(255, 255, 255, 30%);
-      color: white;
-    }
-
-    .form-control:hover, .form-control:focus, .form-control:active, .form-control:active {
-      background-color: rgba(255, 255, 255, 30%);
-      border-color: rgba(255, 255, 255, 30%);
-      color: white;
-    }
     
   </style>
   
@@ -81,7 +24,7 @@
     <div class="container-fluid">
 
       {{!-- Img must be hosted at seperate location --}}
-      {{!-- <img src="http://localhost/arrows.png" alt="#" href="/"> --}}
+      <img src="http://localhost:5000/static/arrows.png" alt="#" href="/">
       <a class="navbar-brand" href="/">JH Getränke App</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

@@ -11,11 +11,12 @@
   <h1>Nix mehr zu bezahlen</h1>
 {{/if}}
 
-<table class="table table-bordered">
+<table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
       <th scope="col">Drink</th>
+      <th scope="col">Marke</th>
       <th scope="col">Price</th>
       <th scope="col">Date</th>
       <th scope="col" class="text-end">Action</th>
@@ -27,10 +28,11 @@
     <tr>
       <th scope="row">{{this.id}}</th>
       <td>{{this.drink_name}}</td>
-      <td>{{this.price}}</td>
+      <td>{{this.drink_brand}}</td>
+      <td>{{this.price}}€</td>
       <td>{{this.timestamp}}</td>
       <td class="text-end">
-        <a href="/pay/{{this.user_id}}/{{this.id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-cash"></i> Pay</a>
+        <a href="/pay/{{this.user_id}}/{{this.id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-cash"></i> Bezahlen</a>
       </td>
     </tr>
     {{/each}}

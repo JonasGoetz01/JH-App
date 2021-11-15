@@ -3,7 +3,8 @@
 {{/if}}
 
 {{#each rows}}
-    <button type="button" class="btn btn-primary btn-lg" style="height: 200px; width: 200px; margin-bottom: 5px;" onclick="window.location.href='/makesale/{{this.user_id}}/{{this.id}}'"><p>{{this.name}},
+    <button type="button" class="btn btn-primary btn-lg" style="height: 200px; width: 200px; margin-bottom: 5px;" onclick="window.location.href='/makesale/{{this.user_id}}/{{this.id}}'"><p class="drink">{{this.name}},
         {{this.brand}}
-        ({{this.price_buy}}€)</p><h2>#{{this.id}}</h2></button>
+        ({{this.price_buy}}€)</p>
+        <h2>#{{this.id}}</h2></button>
 {{/each}}

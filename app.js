@@ -2,6 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const http = require("http");
 
 require('dotenv').config();
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({extended: true})); // New
 app.use(express.json()); // New
 
 // Static Files
-app.use(express.static('public'));
+app.use('/static', express.static('public'));
 
 // Templating Engine
 app.engine('hbs', exphbs( {extname: '.hbs' }));

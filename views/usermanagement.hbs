@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<table class="table table-bordered">
+<table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
@@ -46,7 +46,7 @@
         <a href="/admin/usermanagement/viewuser/{{this.id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-eye"></i> View</a>
         <a href="/admin/usermanagement/edituser/{{this.id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-pencil"></i>
           Edit</a>
-        <a href="/admin/usermanagement/{{this.id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-person-x"></i> Delete</a>
+        <a href="/admin/usermanagement/{{this.id}}" type="button" class="btn btn-light btn-small" style="color:red;"><i class="bi bi-person-x"></i> Delete</a>
       </td>
     </tr>
     {{/each}}

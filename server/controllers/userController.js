@@ -390,6 +390,9 @@ exports.overview = (req, res) => {
     var obj_drink;
     connection.query('SELECT * FROM sales WHERE user_id = ? AND payed = 0', [req.params.id], (err, sales) => {
       if (!err) {
+        sales.forEach(sale => {
+          sale.timestamp = "Am " + String(sale.timestamp).split(" ")[2] + ". " + String(sale.timestamp).split(" ")[1] + ". " + String(sale.timestamp).split(" ")[3] + ", um " + String(sale.timestamp).split(" ")[4];
+        })
         if(sales.length >= 1){
         connection.query('SELECT * FROM drink', (err, drink) => {
           obj_drink = drink;
@@ -399,6 +402,7 @@ exports.overview = (req, res) => {
             while(j < drink.length){
               if(sales[i].drink_id == drink[j].id){
                 sales[i].drink_name = drink[j].name;
+                sales[i].drink_brand = drink[j].brand;
                 sales[i].price = drink[j].price_extern;
                 sales[0].total_cost += drink[j].price_extern;
                 sales[0].user_id = req.params.id;
@@ -417,6 +421,9 @@ exports.overview = (req, res) => {
   var obj_drink;
   connection.query('SELECT * FROM sales WHERE user_id = ? AND payed = 0', [req.params.id], (err, sales) => {
     if (!err) {
+      sales.forEach(sale => {
+        sale.timestamp = "Am " + String(sale.timestamp).split(" ")[2] + ". " + String(sale.timestamp).split(" ")[1] + ". " + String(sale.timestamp).split(" ")[3] + ", um " + String(sale.timestamp).split(" ")[4];
+      })
       if(sales.length >= 1){
       connection.query('SELECT * FROM drink', (err, drink) => {
         obj_drink = drink;
@@ -426,6 +433,7 @@ exports.overview = (req, res) => {
           while(j < drink.length){
             if(sales[i].drink_id == drink[j].id){
               sales[i].drink_name = drink[j].name;
+              sales[i].drink_brand = drink[j].brand;
               sales[i].price = drink[j].price_intern;
               sales[0].total_cost += drink[j].price_intern;
               sales[0].user_id = req.params.id;
