@@ -368,7 +368,8 @@ exports.makesale = (req, res) => {
       //load the homepage with all users
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
-          res.render('home', { rows });
+          let buchungsNotification = encodeURIComponent('Vielen Dank für Deine Buchung!');
+          res.redirect('/?buchung=' + buchungsNotification);
         } else {
           console.log(err);
         }
@@ -465,9 +466,8 @@ exports.pay = (req, res) => {
     if (!err) {
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
-          let sellNotification = encodeURIComponent('Vielen Dank, dass du dein Getränk bezahlt hast!');
+          let sellNotification = encodeURIComponent('Vielen Dank, dass Du Dein Getränk bezahlt hast!');
           res.redirect('/?notification=' + sellNotification);
-          //res.render('home', { rows,  });
         } else {
           console.log(err);
         }
@@ -490,7 +490,7 @@ exports.payall = (req, res) => {
     if (!err) {
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
-          let sellNotificationAll = encodeURIComponent('Vielen Dank, dass du alle deine Getränke bezahlt hast!');
+          let sellNotificationAll = encodeURIComponent('Vielen Dank, dass Du alle Deine Getränke bezahlt hast!');
           res.redirect('/?notificationAll=' + sellNotificationAll);
         } else {
           console.log(err);
