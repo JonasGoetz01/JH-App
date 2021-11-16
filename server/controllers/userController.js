@@ -31,7 +31,10 @@ exports.admin = (req, res) => {
 exports.home = (req, res) => {
   connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
     if (!err) {
-      res.render('home', { rows });
+      let sellNotification = req.query.notification;
+      let sellNotificationAll = req.query.notificationAll;
+      let buchungsNotification = req.query.buchung;
+      res.render('home', { rows, sellNotification, sellNotificationAll, buchungsNotification });
     } else {
       console.log(err);
     }
@@ -462,7 +465,9 @@ exports.pay = (req, res) => {
     if (!err) {
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
-          res.render('home', { rows,  });
+          let sellNotification = encodeURIComponent('Vielen Dank, dass du dein Getränk bezahlt hast!');
+          res.redirect('/?notification=' + sellNotification);
+          //res.render('home', { rows,  });
         } else {
           console.log(err);
         }
@@ -485,7 +490,8 @@ exports.payall = (req, res) => {
     if (!err) {
       connection.query('SELECT * FROM user WHERE status = "active "', (err, rows) => {
         if (!err) {
-          res.render('home', { rows });
+          let sellNotificationAll = encodeURIComponent('Vielen Dank, dass du alle deine Getränke bezahlt hast!');
+          res.redirect('/?notificationAll=' + sellNotificationAll);
         } else {
           console.log(err);
         }
